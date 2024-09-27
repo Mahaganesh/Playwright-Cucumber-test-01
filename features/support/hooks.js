@@ -1,5 +1,5 @@
 const {After, Before,AfterStep,Status} = require('@cucumber/cucumber');
-const playwright = require('@playwright/test');
+// const playwright = require('@playwright/test');
 Before(async function () {
     // This hook will be executed before all scenarios
     console.log("i am first");

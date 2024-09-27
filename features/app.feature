@@ -1,9 +1,9 @@
 Feature: MakeMyTrip_Validation
 
-  @makemytripdemo
+  @setmoreLogin
   Scenario: Find Flight For Source And Destination
-    Given Launch the Chromium Browser
-    When Enter Fight Details
-    Then Navigate to the Next Page
+    Given Login to Setmore
+    When Select Contacts Component
+    Then Perform search
 
     
