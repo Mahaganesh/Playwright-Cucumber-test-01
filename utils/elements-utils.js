@@ -1,5 +1,3 @@
-// import { chromium, Browser, BrowserContext, Page } from 'playwright'; // Uncomment if needed
-
 class ElementUtil {
     constructor(page) {
         this.page = page;
@@ -16,11 +14,18 @@ class ElementUtil {
     }
 
     async fill(element, value) {
-        const locator = await this.waitForElementToBeVisible(element);
+        let locator = await this.waitForElementToBeVisible(element);
         await locator.fill(value); // Fill the input field with the provided value
     }
 
     async waitForElementToBeVisible(element) {
+        // try {
+        //     const locator = this.page.locator(element);
+        //     await locator.waitFor({ state: "visible", timeout: 45000 });
+        //     return locator; // Return the locator for further actions
+        // } catch (error) {
+        //     console.log('Cannot find the locator')
+        // }
         const locator = this.page.locator(element);
         await locator.waitFor({ state: "visible", timeout: 45000 });
         return locator; // Return the locator for further actions
@@ -64,7 +69,7 @@ class ElementUtil {
 
     async navigateTo(link) {
         await Promise.all([
-            this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }), 
+            this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
             this.page.click(link)
         ]);
     }

@@ -7,8 +7,10 @@ module.exports = {
         './features/*.feature'
       ],
       dryRun: false,
+      defaultTimeout: 300000,
       require: [
-        './steps/*.js'
+        './features/support/*.js',
+        './features/steps/*.js'
       ],
       parallel: 2
     }
