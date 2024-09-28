@@ -1,30 +1,40 @@
-const {After, Before,AfterStep,Status} = require('@cucumber/cucumber');
-const playwright = require('@playwright/test');
+const { After, Before, BeforeAll, AfterAll } = require('@cucumber/cucumber');
+const { chromium } = require('playwright');
+const SetmoreLogin = require("../../page/app.page");
+const ElementUtils = require('../../utils/elements-utils');
+
+let browser;
+let context;
+let page;
+
+BeforeAll(async function () {
+  browser = await chromium.launch({ headless: false });
+});
+
 Before(async function () {
-    // This hook will be executed before all scenarios
-    console.log("i am first");
-    const browser = await playwright.chromium.launch({
-      headless: false,
-  });
-  const context = await browser.newContext();
-    this.page =  await context.newPage();
-  });
+  context = await browser.newContext();
+  page = await context.newPage();
+  // Make the page accessible in step definitions through world context
+  this.page = page; 
+  this.setmoreLogin = new SetmoreLogin(page);
+  this.elementUtils = new ElementUtils(page);
 
-  AfterStep( async function ({result}) {
-    // This hook will be executed after all steps, and take a screenshot on step failure
-    if (result.status === Status.FAILED) {
-      const buffer = await this.page.screenshot();
-      await this.page.screenshot({ path: 'screenshot1.png' });
-      this.attach(buffer.toString('base64'), 'base64:image/png');
-      console.log("Screenshot logged")
+  await this.elementUtils.gotoURL('https://go.setmore.com');
+  await this.setmoreLogin.setmoreLoginPageEmailField('mahaganesh.lt@mailinator.com');
+  await this.setmoreLogin.setmoreLoginPagePasswordField('I2password@97');
+  await this.setmoreLogin.setmoreLoginPageButton();
+});
 
-    }
-  });
-  After(async function () {
-    // Assuming this.driver is a selenium webdriver
-    console.log("i am last");
-    
-    
-  });
+After(async function () {
+  await context.close();
+});
 
-  
+AfterAll(async function () {
+  await browser.close();
+});
+
+module.exports = {
+  page,
+  browser,
+  context
+};

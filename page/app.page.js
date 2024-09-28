@@ -1,14 +1,41 @@
-import { Page } from "@cucumber/screenplay";
-import ElementUtil from "../utils/elements-utils";
-import userData from "../user-data";
+const ElementUtil = require("../utils/elements-utils");
 
-export default class BookingPage {
+class SetmoreLogin {
     constructor(page) {
-        this.page = Page;
+        this.page = page;
         this.elementUtil = new ElementUtil(page);
-        this.bookingPageMenu = "[data-testid='booking-page-tab']";
+        this.setmoreLoginEmail = '//input[@class="email-field"]';
+        this.setmoreLoginPassword = '//input[@class="password-field"]';
+        this.setmoreLoginButton = '//a[@id="login-now"]';
+        this.setmoreCalendarSideButton = '//button[@data-testid="sidebar-trigger"]'
     }
-    async getBookingPageBusinessNameField() {
-        return this.elementUtil.waitForElementToBeVisible(this.bookingPageMenu);
+
+    async waitForSetmoreLoginEmailField() {
+        return this.elementUtil.elementIsVisible(this.setmoreLoginEmail);
     }
+    async waitForSetmoreLoginPasswordField() {
+        return this.elementUtil.elementIsVisible(this.setmoreLoginPassword);
+    }
+    async waitForSetmoreLoginButton() {
+        return this.elementUtil.elementIsVisible(this.setmoreLoginButton);
+    }
+    async waitForSetmoreCalenderSideButton(){
+        return this.elementUtil.waitForElementToBeVisible(this.setmoreCalendarSideButton);
+    }
+
+
+    async setmoreLoginPageEmailField(email) {
+        return this.elementUtil.fill(this.setmoreLoginEmail, email);
+    }
+
+    async setmoreLoginPagePasswordField(password) {
+        return this.elementUtil.fill(this.setmoreLoginPassword, password);
+    }
+
+    async setmoreLoginPageButton() {
+        return this.elementUtil.trigger(this.setmoreLoginButton);
+    }
+
 }
+
+module.exports = SetmoreLogin; 
